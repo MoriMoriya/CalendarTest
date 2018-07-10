@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "703231192766",
+    "firebase_url": "https://intricate-will-203801.firebaseio.com",
+    "project_id": "intricate-will-203801",
+    "storage_bucket": "intricate-will-203801.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703231192766:android:0c7cb2724a2918ee",
+        "android_client_info": {
+          "package_name": "com.example.calendartest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703231192766-r0qnidu1qqdosqm0n88n4aq4hi1ndio2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "703231192766-jslg0iag1k1q83nr8lr56jq2g1l6rm0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.calendartest",
+            "certificate_hash": "ee71cc4d386697bf8c6e5181517644197b0375b1"
+          }
+        },
+        {
+          "client_id": "703231192766-r0qnidu1qqdosqm0n88n4aq4hi1ndio2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTSuf_WDXMUy8IRCZR9JPFczLx1UYi0U8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703231192766-r0qnidu1qqdosqm0n88n4aq4hi1ndio2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
