@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG="MainActivity";
+    private final int FORM_REQUESTCODE = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +42,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent Signintent = new Intent(MainActivity.this, GoogleSignInActivity.class);
-                startActivity(Signintent);
+                startActivityForResult(Signintent,FORM_REQUESTCODE);
 
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
 
-
+        if(requestCode == FORM_REQUESTCODE){
+            if(requestCode == RESULT_OK){
+                TextView et = findViewById(R.id.textView);
+                et.setText(data.getStringExtra("sub_text"));
+            }
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

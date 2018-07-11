@@ -6,19 +6,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -78,21 +74,19 @@ public class InsertActivity extends AppCompatActivity{
         EventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                        .setApplicationName("CalendarTest")
-                        .build();
+
                 Event event = new Event()
                         .setSummary("Google I/O 2018")
                         .setLocation("")
                         .setDescription("");
 
-                DateTime startDateTime = new DateTime("2018-06-25T09:00:00-07:00");
+                DateTime startDateTime = new DateTime("2018-07-20T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("Japan/Tokyo");
                 event.setStart(start);
 
-                DateTime endDateTime = new DateTime("2018-06-25T17:00:00-07:00");
+                DateTime endDateTime = new DateTime("2018-07-20T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("Japan/Tokyo");

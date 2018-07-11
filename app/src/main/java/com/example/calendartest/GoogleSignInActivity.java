@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +83,7 @@ public class GoogleSignInActivity extends MainActivity implements
             }
         }
     }
-    public AuthCredential firebaseAuthWithGoogle(GoogleSignInAccount acct){
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         Log.d(TAG,"firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
@@ -101,7 +102,7 @@ public class GoogleSignInActivity extends MainActivity implements
                         }
                     }
                 });
-        return credential;
+
     }
 
 
@@ -156,5 +157,14 @@ public class GoogleSignInActivity extends MainActivity implements
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
         }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            intent.putExtra("sub_text", (CharSequence) mAuth.getCurrentUser());
+            setResult(RESULT_OK,intent);
+        }
+        return super.onKeyDown(keyCode,event);
     }
 }
