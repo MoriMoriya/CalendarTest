@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -42,22 +41,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent Signintent = new Intent(MainActivity.this, GoogleSignInActivity.class);
-                startActivityForResult(Signintent,FORM_REQUESTCODE);
+                startActivity(Signintent);
 
             }
         });
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
 
-        if(requestCode == FORM_REQUESTCODE){
-            if(requestCode == RESULT_OK){
-                TextView et = findViewById(R.id.textView);
-                et.setText(data.getStringExtra("sub_text"));
-            }
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

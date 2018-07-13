@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -157,14 +156,5 @@ public class GoogleSignInActivity extends MainActivity implements
         } else if (i == R.id.disconnect_button) {
             revokeAccess();
         }
-    }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            Intent intent = new Intent();
-            intent.putExtra("sub_text", (CharSequence) mAuth.getCurrentUser());
-            setResult(RESULT_OK,intent);
-        }
-        return super.onKeyDown(keyCode,event);
     }
 }
