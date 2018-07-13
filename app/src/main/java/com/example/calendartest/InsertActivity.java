@@ -6,20 +6,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
+import com.google.firebase.auth.AuthCredential;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class InsertActivity extends AppCompatActivity{
+
+    HttpTransport transport = AndroidHttp.newCompatibleTransport();
+    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
     private static final String CLIENT_SECRET_DIR = "client_secret.json";
@@ -75,6 +84,22 @@ public class InsertActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                AuthCredential credential = GoogleSignInActivity.nc;
+                HttpTransport transport = AndroidHttp.newCompatibleTransport();
+                JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
+                        transport,jsonFactory, (HttpRequestInitializer) credential).setApplicationName("test").build();
+
+                com.google.api.services.calendar.model.Calendar calendar = new Calendar();
+                calendar.setSummary("calendarSummary");
+                calendar.setTimeZone("America/Los_Angeles");
+                try {
+                    Calendar createdCalendar = service.calendars().insert(calendar).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Event event = new Event()
                         .setSummary("Google I/O 2018")
                         .setLocation("")
@@ -111,7 +136,13 @@ public class InsertActivity extends AppCompatActivity{
 
                 event.setReminders(reminders);
                 String calendarId = "primary";
-                //event = service.events().insert(calendarId, event).execute();
+                try {
+                    event = service.events().insert(calendarId, event).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
     }
