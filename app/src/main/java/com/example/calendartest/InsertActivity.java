@@ -4,39 +4,34 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Calendar;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
-import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class InsertActivity extends AppCompatActivity{
+    private static FirebaseAuth mAuth;
+    private AuthCredential ac = GoogleSignInActivity.ac;
 
-    HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
+    public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(),null);
+    private static String TAG ="InsertActivity";
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String CLIENT_SECRET_DIR = "client_secret.json";
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
+        ListView listView;
 
 /*        final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -84,11 +79,12 @@ public class InsertActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                AuthCredential credential = GoogleSignInActivity.nc;
+                TextView text2 = (TextView)findViewById(R.id.textView2);
+
                 HttpTransport transport = AndroidHttp.newCompatibleTransport();
                 JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
-                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
+                text2.setText(credential.toString());
+/*                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                         transport,jsonFactory, (HttpRequestInitializer) credential).setApplicationName("test").build();
 
                 com.google.api.services.calendar.model.Calendar calendar = new Calendar();
@@ -108,13 +104,13 @@ public class InsertActivity extends AppCompatActivity{
                 DateTime startDateTime = new DateTime("2018-07-20T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
-                        .setTimeZone("Japan/Tokyo");
+                        .setTimeZone("America/Los_Angeles");
                 event.setStart(start);
 
                 DateTime endDateTime = new DateTime("2018-07-20T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
-                        .setTimeZone("Japan/Tokyo");
+                        .setTimeZone("America/Los_Angeles");
                 event.setEnd(end);
 
                 String[] recurrence = new String[]{"RRULE:FREQ=DIALY;COUNT=2"};
@@ -141,7 +137,7 @@ public class InsertActivity extends AppCompatActivity{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+*/
 
             }
         });

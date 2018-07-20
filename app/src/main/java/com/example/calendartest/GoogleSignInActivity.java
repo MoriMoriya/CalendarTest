@@ -26,7 +26,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class GoogleSignInActivity extends MainActivity implements
         View.OnClickListener {
 
-    public static AuthCredential nc;
+    public static GoogleSignInAccount mAccount;
+    public static AuthCredential ac;
+
     private static final String TAG ="GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -86,7 +88,7 @@ public class GoogleSignInActivity extends MainActivity implements
         Log.d(TAG,"firebaseAuthWithGoogle:" + acct.getId());
 
         final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-        nc = credential;
+        mAccount = acct;
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
