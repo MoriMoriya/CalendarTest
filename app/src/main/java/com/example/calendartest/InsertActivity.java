@@ -1,32 +1,43 @@
 package com.example.calendartest;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException;
+import java.util.Arrays;
 
-public class InsertActivity extends AppCompatActivity{
+public class InsertActivity extends AppCompatActivity {
     private static FirebaseAuth mAuth;
     private AuthCredential ac = GoogleSignInActivity.ac;
 
-    public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(),null);
-    private static String TAG ="InsertActivity";
-    private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(), null);
+    private static String TAG = "InsertActivity";
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR};
 
+    private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,35 +90,36 @@ public class InsertActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                TextView text2 = (TextView)findViewById(R.id.textView2);
+                TextView text2 = (TextView) findViewById(R.id.textView2);
+
 
                 HttpTransport transport = AndroidHttp.newCompatibleTransport();
                 JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-                text2.setText(credential.toString());
-/*                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
-                        transport,jsonFactory, (HttpRequestInitializer) credential).setApplicationName("test").build();
+                String text = "171y065@epson-isc.com";
 
-                com.google.api.services.calendar.model.Calendar calendar = new Calendar();
-                calendar.setSummary("calendarSummary");
-                calendar.setTimeZone("America/Los_Angeles");
-                try {
-                    Calendar createdCalendar = service.calendars().insert(calendar).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
+                GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff())
+                        .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME,null));
+
+                text2.setText(settings.toString());
+
+                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
+                        transport, jsonFactory,Credential1).setApplicationName("test").build();
+
+                //service = new Calendar.Builder(transport, jsonFactory, Credential1).setApplicationName("CalendarTest").build();
 
                 Event event = new Event()
                         .setSummary("Google I/O 2018")
                         .setLocation("")
                         .setDescription("");
 
-                DateTime startDateTime = new DateTime("2018-07-20T09:00:00-07:00");
+                DateTime startDateTime = new DateTime("2018-07-25T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("America/Los_Angeles");
                 event.setStart(start);
 
-                DateTime endDateTime = new DateTime("2018-07-20T17:00:00-07:00");
+                DateTime endDateTime = new DateTime("2018-07-25T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("America/Los_Angeles");
@@ -132,16 +144,19 @@ public class InsertActivity extends AppCompatActivity{
 
                 event.setReminders(reminders);
                 String calendarId = "primary";
+
                 try {
                     event = service.events().insert(calendarId, event).execute();
+                    Log.d(TAG,event.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-*/
 
             }
         });
+
     }
+
     public void onDateReturnValue(String Date) {        //入力された日付をtextに代入
         TextView Datetext = (TextView) findViewById(R.id.DateText);
         Datetext.setText(Date);
