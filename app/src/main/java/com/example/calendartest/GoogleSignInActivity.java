@@ -32,7 +32,7 @@ public class GoogleSignInActivity extends MainActivity implements
     private static final String TAG ="GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    private static FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;

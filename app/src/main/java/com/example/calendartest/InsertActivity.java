@@ -1,8 +1,10 @@
 package com.example.calendartest;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,19 +25,22 @@ import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.IOException;
 import java.util.Arrays;
 
 public class InsertActivity extends AppCompatActivity {
-    private static FirebaseAuth mAuth;
+
     private AuthCredential ac = GoogleSignInActivity.ac;
 
     public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(), null);
     private static String TAG = "InsertActivity";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR};
+
+    static final HttpTransport transport = AndroidHttp.newCompatibleTransport();
+    static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
 
     private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
     @Override
@@ -43,6 +48,10 @@ public class InsertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
         ListView listView;
+
+        //ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CALENDAR); パーミッションのチェック
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_CALENDAR},1);
 
 /*        final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -93,15 +102,10 @@ public class InsertActivity extends AppCompatActivity {
                 TextView text2 = (TextView) findViewById(R.id.textView2);
 
 
-                HttpTransport transport = AndroidHttp.newCompatibleTransport();
-                JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-                String text = "171y065@epson-isc.com";
-
                 SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-                GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(SCOPES)).setBackOff(new ExponentialBackOff())
-                        .setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME,null));
-
-                text2.setText(settings.toString());
+                GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
+                        .setSelectedAccountName(GoogleSignInActivity.mAuth.getCurrentUser().getEmail());
+                text2.setText(Credential1.getSelectedAccountName());
 
                 com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                         transport, jsonFactory,Credential1).setApplicationName("test").build();
