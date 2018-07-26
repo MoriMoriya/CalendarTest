@@ -3,10 +3,11 @@ package com.example.calendartest;
 import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,17 +18,11 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
-import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class InsertActivity extends AppCompatActivity {
@@ -40,9 +35,10 @@ public class InsertActivity extends AppCompatActivity {
 
     static final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
+    static final int MY_PERMISSION_REQUEST_WRITE_CALENDAR = 1;
 
     private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +46,15 @@ public class InsertActivity extends AppCompatActivity {
         ListView listView;
 
         //ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CALENDAR); パーミッションのチェック
+        //final int permissionCheck = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_CALENDAR);
 
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_CALENDAR},1);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_PERMISSION_REQUEST_WRITE_CALENDAR);
+            }
+        }
 
 /*        final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -106,7 +109,7 @@ public class InsertActivity extends AppCompatActivity {
                 GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
                         .setSelectedAccountName(GoogleSignInActivity.mAuth.getCurrentUser().getEmail());
                 text2.setText(Credential1.getSelectedAccountName());
-
+/*
                 com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                         transport, jsonFactory,Credential1).setApplicationName("test").build();
 
@@ -155,7 +158,7 @@ public class InsertActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+*/
             }
         });
 
@@ -176,4 +179,6 @@ public class InsertActivity extends AppCompatActivity {
         endTimetext.setText(endTime);
     }
 }
+
+
 
