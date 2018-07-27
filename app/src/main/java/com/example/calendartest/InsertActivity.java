@@ -1,6 +1,8 @@
 package com.example.calendartest;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -31,28 +33,23 @@ public class InsertActivity extends AppCompatActivity {
 
     public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(), null);
     private static String TAG = "InsertActivity";
-    private static final String[] SCOPES = {CalendarScopes.CALENDAR};
+    private static String[] SCOPES = {CalendarScopes.CALENDAR};
 
     static final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
     static final int MY_PERMISSION_REQUEST_WRITE_CALENDAR = 1;
-
-    private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
-
+    static final String SCOPE = "oauth2:https://googleapis.com/auth/userinfo.profile";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
         ListView listView;
 
-        //ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_CALENDAR); パーミッションのチェック
-        //final int permissionCheck = ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_CALENDAR);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission_group.CALENDAR)) {
 
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_PERMISSION_REQUEST_WRITE_CALENDAR);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission_group.CALENDAR}, MY_PERMISSION_REQUEST_WRITE_CALENDAR);
             }
         }
 
@@ -63,6 +60,11 @@ public class InsertActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 */
+
+        AccountManager accountManager = AccountManager.get(this);
+        final Account[] accounts = accountManager.getAccountsByType("com.google");
+        final String mAccountName = accounts[0].name;
+
         String setcalendarDate = "";
         final String setcalendarStartTime = "";
         String setcalendarEndTime = "";
@@ -104,17 +106,16 @@ public class InsertActivity extends AppCompatActivity {
 
                 TextView text2 = (TextView) findViewById(R.id.textView2);
 
-
                 SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
                 GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
                         .setSelectedAccountName(GoogleSignInActivity.mAuth.getCurrentUser().getEmail());
-                text2.setText(Credential1.getSelectedAccountName());
-/*
+
                 com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
-                        transport, jsonFactory,Credential1).setApplicationName("test").build();
+                        transport, jsonFactory, Credential1).setApplicationName("test").build();
 
                 //service = new Calendar.Builder(transport, jsonFactory, Credential1).setApplicationName("CalendarTest").build();
 
+/*
                 Event event = new Event()
                         .setSummary("Google I/O 2018")
                         .setLocation("")
@@ -153,15 +154,13 @@ public class InsertActivity extends AppCompatActivity {
                 String calendarId = "primary";
 
                 try {
-                    event = service.events().insert(calendarId, event).execute();
-                    Log.d(TAG,event.toString());
+                    service.events().insert(calendarId, event).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 */
             }
         });
-
     }
 
     public void onDateReturnValue(String Date) {        //入力された日付をtextに代入

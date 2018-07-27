@@ -2,8 +2,11 @@ package com.example.calendartest;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +41,8 @@ public class GoogleSignInActivity extends MainActivity implements
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
+    static final int MY_GET_ACCOUNTS = 1;
+
     String signed_out = "SignedOut";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,15 @@ public class GoogleSignInActivity extends MainActivity implements
 
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         mAuth = FirebaseAuth.getInstance();
+
+
+        if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.GET_ACCOUNTS)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS},MY_GET_ACCOUNTS);
+            }
+        }
     }
 
     @Override
