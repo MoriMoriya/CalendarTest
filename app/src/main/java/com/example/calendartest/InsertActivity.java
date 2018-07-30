@@ -3,8 +3,6 @@ package com.example.calendartest;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -20,25 +18,34 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.IOException;
 import java.util.Arrays;
 
-public class InsertActivity extends AppCompatActivity {
+import static com.example.calendartest.GoogleSignInActivity.mAccount;
+import static com.example.calendartest.GoogleSignInActivity.mAuth;
+
+public class InsertActivity extends AppCompatActivity{
 
     private AuthCredential ac = GoogleSignInActivity.ac;
 
-    public static final AuthCredential credential = GoogleAuthProvider.getCredential(GoogleSignInActivity.mAccount.getIdToken(), null);
+    public static final AuthCredential credential = GoogleAuthProvider.getCredential(mAccount.getIdToken(), null);
     private static String TAG = "InsertActivity";
     private static String[] SCOPES = {CalendarScopes.CALENDAR};
 
-    static final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    static final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
     static final int MY_PERMISSION_REQUEST_WRITE_CALENDAR = 1;
     static final String SCOPE = "oauth2:https://googleapis.com/auth/userinfo.profile";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,19 +110,21 @@ public class InsertActivity extends AppCompatActivity {
         EventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 TextView text2 = (TextView) findViewById(R.id.textView2);
 
-                SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-                GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplication(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
-                        .setSelectedAccountName(GoogleSignInActivity.mAuth.getCurrentUser().getEmail());
+                HttpTransport transport = AndroidHttp.newCompatibleTransport();
+                JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
+                GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
+                        .setSelectedAccountName(mAuth.getCurrentUser().getEmail());
                 com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
-                        transport, jsonFactory, Credential1).setApplicationName("test").build();
+                        transport, jsonFactory, Credential1).setApplicationName("Calendartest").build();
+
+
 
                 //service = new Calendar.Builder(transport, jsonFactory, Credential1).setApplicationName("CalendarTest").build();
 
-/*
+
                 Event event = new Event()
                         .setSummary("Google I/O 2018")
                         .setLocation("")
@@ -158,10 +167,9 @@ public class InsertActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-*/
             }
         });
-    }
+     }
 
     public void onDateReturnValue(String Date) {        //入力された日付をtextに代入
         TextView Datetext = (TextView) findViewById(R.id.DateText);
