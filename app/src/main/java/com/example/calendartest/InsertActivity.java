@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.GoogleAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
@@ -114,9 +115,18 @@ public class InsertActivity extends AppCompatActivity{
 
                 HttpTransport transport = AndroidHttp.newCompatibleTransport();
                 JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
+                String accountName =mAuth.getCurrentUser().getEmail();
                 GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
                         .setSelectedAccountName(mAuth.getCurrentUser().getEmail());
+
+                try {
+                    Credential1.getToken();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (GoogleAuthException e) {
+                    e.printStackTrace();
+                }
+
                 com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
                         transport, jsonFactory, Credential1).setApplicationName("Calendartest").build();
 
@@ -130,13 +140,13 @@ public class InsertActivity extends AppCompatActivity{
                         .setLocation("")
                         .setDescription("");
 
-                DateTime startDateTime = new DateTime("2018-07-25T09:00:00-07:00");
+                DateTime startDateTime = new DateTime("2018-08-25T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("America/Los_Angeles");
                 event.setStart(start);
 
-                DateTime endDateTime = new DateTime("2018-07-25T17:00:00-07:00");
+                DateTime endDateTime = new DateTime("2018-08-25T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("America/Los_Angeles");
