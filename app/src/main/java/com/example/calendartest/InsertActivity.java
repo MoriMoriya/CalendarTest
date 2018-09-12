@@ -1,50 +1,53 @@
 package com.example.calendartest;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.GoogleAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static com.example.calendartest.GoogleSignInActivity.mAccount;
-import static com.example.calendartest.GoogleSignInActivity.mAuth;
 
 public class InsertActivity extends AppCompatActivity{
 
     private AuthCredential ac = GoogleSignInActivity.ac;
 
-    public static final AuthCredential credential = GoogleAuthProvider.getCredential(mAccount.getIdToken(), null);
     private static String TAG = "InsertActivity";
-    private static String[] SCOPES = {CalendarScopes.CALENDAR};
 
-    static final int MY_PERMISSION_REQUEST_WRITE_CALENDAR = 1;
-    static final String SCOPE = "oauth2:https://googleapis.com/auth/userinfo.profile";
+    private static com.google.api.services.calendar.Calendar service=null;
+
+    private static final int MY_PERMISSION_REQUEST_WRITE_CALENDAR = 1;
+
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/credentials.json";
+    private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
+    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+
 
 
     @Override
@@ -52,6 +55,8 @@ public class InsertActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
         ListView listView;
+
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission_group.CALENDAR)) {
@@ -61,6 +66,7 @@ public class InsertActivity extends AppCompatActivity{
             }
         }
 
+
 /*        final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -69,9 +75,6 @@ public class InsertActivity extends AppCompatActivity{
         int minute = calendar.get(Calendar.MINUTE);
 */
 
-        AccountManager accountManager = AccountManager.get(this);
-        final Account[] accounts = accountManager.getAccountsByType("com.google");
-        final String mAccountName = accounts[0].name;
 
         String setcalendarDate = "";
         final String setcalendarStartTime = "";
@@ -113,70 +116,83 @@ public class InsertActivity extends AppCompatActivity{
             public void onClick(View v) {
                 TextView text2 = (TextView) findViewById(R.id.textView2);
 
-                HttpTransport transport = AndroidHttp.newCompatibleTransport();
+
+                    HttpTransport transport = AndroidHttp.newCompatibleTransport();
+                    JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+                    service = new com.google.api.services.calendar.Calendar.Builder(
+                            transport, jsonFactory, credential)
+                            .setApplicationName("calendartest")
+                            .build();
+
+                /*HttpTransport transport = AndroidHttp.newCompatibleTransport();
                 JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-                String accountName =mAuth.getCurrentUser().getEmail();
                 GoogleAccountCredential Credential1 = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Arrays.asList(CalendarScopes.CALENDAR)).setBackOff(new ExponentialBackOff())
                         .setSelectedAccountName(mAuth.getCurrentUser().getEmail());
 
                 try {
                     Credential1.getToken();
+                    Log.d(TAG,Credential1.getToken());
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.e(TAG,"トークンがありません。");
                 } catch (GoogleAuthException e) {
                     e.printStackTrace();
+                    Log.e(TAG,"トークンがありません");
                 }
+*/
 
-                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
-                        transport, jsonFactory, Credential1).setApplicationName("Calendartest").build();
+
 
 
 
                 //service = new Calendar.Builder(transport, jsonFactory, Credential1).setApplicationName("CalendarTest").build();
 
-
                 Event event = new Event()
-                        .setSummary("Google I/O 2018")
-                        .setLocation("")
-                        .setDescription("");
+                        .setSummary("Google I/O 2015")
+                        .setLocation("800 Howard St., San Francisco, CA 94103")
+                        .setDescription("A chance to hear more about Google's developer products.");
 
-                DateTime startDateTime = new DateTime("2018-08-25T09:00:00-07:00");
+                DateTime startDateTime = new DateTime("2015-05-28T09:00:00-07:00");
                 EventDateTime start = new EventDateTime()
                         .setDateTime(startDateTime)
                         .setTimeZone("America/Los_Angeles");
                 event.setStart(start);
 
-                DateTime endDateTime = new DateTime("2018-08-25T17:00:00-07:00");
+                DateTime endDateTime = new DateTime("2015-05-28T17:00:00-07:00");
                 EventDateTime end = new EventDateTime()
                         .setDateTime(endDateTime)
                         .setTimeZone("America/Los_Angeles");
                 event.setEnd(end);
 
-                String[] recurrence = new String[]{"RRULE:FREQ=DIALY;COUNT=2"};
+                String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
                 event.setRecurrence(Arrays.asList(recurrence));
 
-                EventAttendee[] attendees = new EventAttendee[]{
+                EventAttendee[] attendees = new EventAttendee[] {
                         new EventAttendee().setEmail("lpage@example.com"),
-                        new EventAttendee().setEmail("sbrin@example.com")
+                        new EventAttendee().setEmail("sbrin@example.com"),
                 };
                 event.setAttendees(Arrays.asList(attendees));
 
-                EventReminder[] reminderOverrides = new EventReminder[]{
+                EventReminder[] reminderOverrides = new EventReminder[] {
                         new EventReminder().setMethod("email").setMinutes(24 * 60),
                         new EventReminder().setMethod("popup").setMinutes(10),
                 };
                 Event.Reminders reminders = new Event.Reminders()
                         .setUseDefault(false)
                         .setOverrides(Arrays.asList(reminderOverrides));
-
                 event.setReminders(reminders);
+
                 String calendarId = "primary";
 
                 try {
-                    service.events().insert(calendarId, event).execute();
+                    event = service.events().insert(calendarId,event).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                Log.d(TAG, String.valueOf(service));
+
+                DateTime now = new DateTime(System.currentTimeMillis());
             }
         });
      }
