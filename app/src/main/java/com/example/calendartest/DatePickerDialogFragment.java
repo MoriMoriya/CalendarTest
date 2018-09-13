@@ -2,17 +2,10 @@ package com.example.calendartest;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.usage.UsageEvents;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventDateTime;
-
-import java.io.IOException;
 import java.util.Calendar;
 
 /**
@@ -40,7 +33,7 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
         String str = String.valueOf(year)  + String.valueOf(month)+ String.valueOf(day);
 
         InsertActivity callingActivity =(InsertActivity) getActivity();
-        callingActivity.onDateReturnValue(str);
+        //callingActivity.onDateReturnValue(str);
         dismiss();
     }
 }
