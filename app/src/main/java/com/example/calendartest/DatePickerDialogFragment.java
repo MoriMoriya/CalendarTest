@@ -30,10 +30,15 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
         month += 1; //月は+1しないといけない
 
-        String str = String.valueOf(year)  + String.valueOf(month)+ String.valueOf(day);
+        String strmonth = String.valueOf(month);
+
+        if(month < 10){
+            strmonth = "0" + month;
+        }
+        String str = String.valueOf(year)  + "-" + strmonth + "-" + String.valueOf(day);
 
         InsertActivity callingActivity =(InsertActivity) getActivity();
-        //callingActivity.onDateReturnValue(str);
+        callingActivity.onDateReturnValue(str);
         dismiss();
     }
 }

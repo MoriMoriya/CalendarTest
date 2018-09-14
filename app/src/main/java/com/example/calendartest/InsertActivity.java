@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,7 +23,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.firebase.auth.AuthCredential;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -115,12 +116,14 @@ public class InsertActivity extends AppCompatActivity{
         });
      }
 
+
+/*
      public void createEvent(GoogleAccountCredential credential) throws IOException {
          service = new com.google.api.services.calendar.Calendar.Builder(
                  transport,jsonFactory,credential).setApplicationName("CalendarTest")
                  .build();
 
-/*         Event event = new Event()
+         Event event = new Event()
                  .setSummary("Google I/O 2015")
                  .setLocation("800 Howard St., San Francisco, CA 94103")
                  .setDescription("A chance to hear more about Google's developer products.");
@@ -158,8 +161,9 @@ public class InsertActivity extends AppCompatActivity{
          String calendarId = "primary";
          event = service.events().insert(calendarId, event).execute();
          System.out.printf("Event created: %s\n", event.getHtmlLink());
-*/
+
      }
+     */
     public void onDateReturnValue(String Date) {        //入力された日付をtextに代入
         TextView Datetext = (TextView) findViewById(R.id.DateText);
         Datetext.setText(Date);
@@ -174,7 +178,22 @@ public class InsertActivity extends AppCompatActivity{
         TextView endTimetext = (TextView) findViewById(R.id.EndTimetext);
         endTimetext.setText(endTime);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_sub,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.actionok:
+                eventinsert = (EventInsert) new EventInsert().execute();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
 
 

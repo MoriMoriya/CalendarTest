@@ -21,7 +21,7 @@ public class EndTimePickerDialogFragment extends DialogFragment implements TimeP
     }
     public void onTimeSet(TimePicker view,int hourOfDay, int minute){
         //時刻が選択された時の処理
-        String str = String.valueOf(hourOfDay) + String.valueOf(minute);
+        String str = "T" + String.valueOf(hourOfDay) + ":" +  String.valueOf(minute);
         InsertActivity callingActivity =(InsertActivity) getActivity();
                 callingActivity.onEndTimeReturnValue(str);
                 dismiss();
