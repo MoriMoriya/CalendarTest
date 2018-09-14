@@ -22,8 +22,15 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     }
     public void onTimeSet(TimePicker view,int hourOfDay, int minute){
         //時刻が選択された時の処理
-
-        String str = "T" + String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
+        String strHourofday = String.valueOf(hourOfDay);
+        String strMinute = String.valueOf(minute);
+        if(hourOfDay <10){
+            strHourofday = "0" + hourOfDay;
+        }
+        if(minute < 10){
+            strMinute = "0" + minute;
+        }
+        String str = "T" + strHourofday + ":" + strMinute + ":00";
         InsertActivity callingActivity =(InsertActivity) getActivity();
         callingActivity.onTimeReturnValue(str);
         dismiss();

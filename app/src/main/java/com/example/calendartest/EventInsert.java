@@ -1,6 +1,7 @@
 package com.example.calendartest;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -11,9 +12,12 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by 171y065 on 2018/09/14.
@@ -25,7 +29,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
 
     @Override
     protected Integer doInBackground(Integer... integers) {
-        mcredential.setSelectedAccountName("171y065@epson-isc.com");
+        mcredential.setSelectedAccountName(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         createEvent();
         return null;
     }
@@ -39,6 +43,9 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
                 .setApplicationName("CalendarTest")
                 .build();
 
+        String StartTime = String.valueOf(R.id.StartTimeText);
+        String EndTime = String.valueOf(R.id.EndTimetext);
+        String Day = String.valueOf(R.id.DateText);
 
         Event event = new Event()
                 .setSummary("TESTTEST")
@@ -81,7 +88,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Log.d("",event.getHtmlLink());
+        Log.e(TAG, StartTime);
     }
 
 }
