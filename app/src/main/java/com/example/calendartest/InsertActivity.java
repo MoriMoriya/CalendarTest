@@ -21,7 +21,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.firebase.auth.AuthCredential;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.List;
 
 public class InsertActivity extends AppCompatActivity{
 
-    private AuthCredential ac = GoogleSignInActivity.ac;
 
     private static String TAG = "InsertActivity";
 
@@ -115,20 +113,24 @@ public class InsertActivity extends AppCompatActivity{
         });
      }
 
-
-    public void onDateReturnValue(String Date) {        //入力された日付をtextに代入
+    public static String EDate;
+    public void onDateReturnValue(String Date) {            //入力された日付をtextに代入
         TextView Datetext = (TextView) findViewById(R.id.DateText);
         Datetext.setText(Date);
+        EDate = Date;
     }
 
+    public static String EStartTime;
     public void onTimeReturnValue(String startTime) {        //入力された開始時刻をtextに代入
         TextView Timetext = (TextView) findViewById(R.id.StartTimeText);
         Timetext.setText(startTime);
+        EStartTime = startTime;
     }
-
+    public static String EEndTime;
     public void onEndTimeReturnValue(String endTime) {     //入力された終了時刻をtextに代入
         TextView endTimetext = (TextView) findViewById(R.id.EndTimetext);
         endTimetext.setText(endTime);
+        EEndTime = endTime;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

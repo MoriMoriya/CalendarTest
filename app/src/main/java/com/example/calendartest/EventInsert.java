@@ -1,7 +1,6 @@
 package com.example.calendartest;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -16,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by 171y065 on 2018/09/14.
@@ -43,22 +40,25 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
                 .setApplicationName("CalendarTest")
                 .build();
 
-        String StartTime = String.valueOf(R.id.StartTimeText);
+        //String StartTime = (TextView) findViewById(R.id.StartTimeText);
         String EndTime = String.valueOf(R.id.EndTimetext);
         String Day = String.valueOf(R.id.DateText);
+
 
         Event event = new Event()
                 .setSummary("TESTTEST")
                 .setLocation("")
                 .setDescription("");
 
-        DateTime startDateTime = new DateTime("2018-09-15T18:00:00+09:00");
+        //DateTime startDateTime = new DateTime("2018-09-15T18:00:00+09:00");
+        DateTime startDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EStartTime + "+09:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
                 .setTimeZone("Asia/Tokyo");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime("2018-09-15T20:00:00+09:00");
+        //DateTime endDateTime = new DateTime("2018-09-15T20:00:00+09:00");
+        DateTime endDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EEndTime + "+09:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("Asia/Tokyo");
@@ -73,9 +73,10 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         };
         event.setAttendees(Arrays.asList(attendees));
 */
+
         EventReminder[] reminderOverrides = new EventReminder[] {
-                new EventReminder().setMethod("email").setMinutes(24 * 60),
-                new EventReminder().setMethod("popup").setMinutes(30),
+                new EventReminder().setMethod("popup").setMinutes(24 * 60),
+                new EventReminder().setMethod("popup").setMinutes(60),
         };
         Event.Reminders reminders = new Event.Reminders()
                 .setUseDefault(false)
@@ -88,7 +89,8 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.e(TAG, StartTime);
-    }
 
+        //Log.e(TAG, );
+    }
+    
 }
