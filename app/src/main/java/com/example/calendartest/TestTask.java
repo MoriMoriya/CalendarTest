@@ -8,7 +8,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
@@ -16,34 +15,38 @@ import com.google.api.services.calendar.model.EventReminder;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
 
 /**
- * Created by 171y065 on 2018/09/13.
+ * Created by 171y065 on 2018/09/14.
  */
 
-public class TestTask extends AsyncTask<Integer,Integer,Integer>{
-    private final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    private final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+class TestTask extends AsyncTask<Integer,Integer,Integer>{
+    //final HttpTransport transport = AndroidHttp.newCompatibleTransport();
+    //final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-    private GoogleAccountCredential credential = InsertActivity.credential;
-
-    private static final String CREDENTIALS_FILE_PATH = "src/main/resources/credentials.json";
-    private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR);
-    private com.google.api.services.calendar.Calendar service;
-
-    private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
-
+    private GoogleAccountCredential mcredential = InsertActivity.credential;
+    com.google.api.services.calendar.Calendar service;
 
     @Override
-    protected Integer doInBackground(Integer... params){
-        service = new com.google.api.services.calendar.Calendar.Builder(
-                transport,jsonFactory,credential).setApplicationName("CalendarTest")
+    protected Integer doInBackground(Integer... integers) {
+        mcredential.setSelectedAccountName("171y065@epson-isc.com");
+        createEvent();
+        return null;
+    }
+
+    private void createEvent() {
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(
+                transport, jsonFactory, mcredential)
+                .setApplicationName("CalendarTest")
                 .build();
 
+
         Event event = new Event()
-                .setSummary("Google I/O 2015")
+                .setSummary("TEST")
                 .setLocation("800 Howard St., San Francisco, CA 94103")
                 .setDescription("A chance to hear more about Google's developer products.");
 
@@ -79,11 +82,10 @@ public class TestTask extends AsyncTask<Integer,Integer,Integer>{
 
         String calendarId = "primary";
         try {
-            event = service.events().insert(calendarId, event).execute();
+            service.events().insert(calendarId, event).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.printf("Event created: %s\n", event.getHtmlLink());
-        return 0;
+        //Log.d("",event.getHtmlLink());
     }
 }

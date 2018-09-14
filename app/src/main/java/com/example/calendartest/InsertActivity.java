@@ -107,8 +107,9 @@ public class InsertActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 TextView text2 = (TextView) findViewById(R.id.textView2);
+                //credential.setSelectedAccountName("171y065@epson-isc.com");
 
-                testTask = new TestTask();
+                testTask = (TestTask) new TestTask().execute();
 
             }
         });
@@ -118,7 +119,6 @@ public class InsertActivity extends AppCompatActivity{
          service = new com.google.api.services.calendar.Calendar.Builder(
                  transport,jsonFactory,credential).setApplicationName("CalendarTest")
                  .build();
-         credential.setSelectedAccountName("171y065@epson-isc.com");
 
 /*         Event event = new Event()
                  .setSummary("Google I/O 2015")
