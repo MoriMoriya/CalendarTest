@@ -9,22 +9,17 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-
 /**
  * Created by 171y065 on 2018/09/14.
  */
 
-class TestTask extends AsyncTask<Integer,Integer,Integer>{
-    //final HttpTransport transport = AndroidHttp.newCompatibleTransport();
-    //final JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
+public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private GoogleAccountCredential mcredential = InsertActivity.credential;
     com.google.api.services.calendar.Calendar service;
 
@@ -46,34 +41,34 @@ class TestTask extends AsyncTask<Integer,Integer,Integer>{
 
 
         Event event = new Event()
-                .setSummary("TEST")
-                .setLocation("800 Howard St., San Francisco, CA 94103")
-                .setDescription("A chance to hear more about Google's developer products.");
+                .setSummary("TESTTEST")
+                .setLocation("")
+                .setDescription("");
 
-        DateTime startDateTime = new DateTime("2018-09-15T09:00:00-07:00");
+        DateTime startDateTime = new DateTime("2018-09-15T18:00:00+09:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
-                .setTimeZone("America/Los_Angeles");
+                .setTimeZone("Asia/Tokyo");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime("2018-09-15T17:00:00-07:00");
+        DateTime endDateTime = new DateTime("2018-09-15T20:00:00+09:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
-                .setTimeZone("America/Los_Angeles");
+                .setTimeZone("Asia/Tokyo");
         event.setEnd(end);
 
-        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
         event.setRecurrence(Arrays.asList(recurrence));
 
-        EventAttendee[] attendees = new EventAttendee[] {
+/*        EventAttendee[] attendees = new EventAttendee[] {
                 new EventAttendee().setEmail("lpage@example.com"),
                 new EventAttendee().setEmail("sbrin@example.com"),
         };
         event.setAttendees(Arrays.asList(attendees));
-
+*/
         EventReminder[] reminderOverrides = new EventReminder[] {
                 new EventReminder().setMethod("email").setMinutes(24 * 60),
-                new EventReminder().setMethod("popup").setMinutes(10),
+                new EventReminder().setMethod("popup").setMinutes(30),
         };
         Event.Reminders reminders = new Event.Reminders()
                 .setUseDefault(false)
@@ -88,4 +83,5 @@ class TestTask extends AsyncTask<Integer,Integer,Integer>{
         }
         //Log.d("",event.getHtmlLink());
     }
+
 }

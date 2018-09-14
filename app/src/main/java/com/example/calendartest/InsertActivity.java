@@ -47,7 +47,7 @@ public class InsertActivity extends AppCompatActivity{
     private static final String PREF_ACCOUNT_NAME = "171y065@epson-isc.com";
 
 
-    private TestTask testTask;
+    private EventInsert eventinsert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class InsertActivity extends AppCompatActivity{
                 TextView text2 = (TextView) findViewById(R.id.textView2);
                 //credential.setSelectedAccountName("171y065@epson-isc.com");
 
-                testTask = (TestTask) new TestTask().execute();
+                eventinsert = (EventInsert) new EventInsert().execute();
 
             }
         });
