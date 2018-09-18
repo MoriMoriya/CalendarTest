@@ -59,7 +59,7 @@ class EventConfirm extends  AsyncTask<Integer,Integer,Integer> {
             List<Event> items = events.getItems();
             for(Event event : items){
                 Log.d(TAG,event.getSummary());
-                list.add(event.getSummary());
+                list.add(event.getSummary() + event.getEnd());
             }
             pageToken = events.getNextPageToken();
         }while(pageToken != null);
