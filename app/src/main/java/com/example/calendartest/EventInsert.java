@@ -1,6 +1,8 @@
 package com.example.calendartest;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -24,11 +26,18 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private GoogleAccountCredential mcredential = InsertActivity.credential;
     com.google.api.services.calendar.Calendar service;
 
+    private String flag = "false";
 
+    private Context context;
+
+    EventInsert(Context context){
+        this.context = context;
+    }
     @Override
     protected Integer doInBackground(Integer... integers) {
         mcredential.setSelectedAccountName(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         createEvent();
+
         return 0;
     }
 
@@ -80,8 +89,18 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         String calendarId = "primary";
         try {
             service.events().insert(calendarId, event).execute();
+            flag = "true";
         } catch (IOException e) {
             e.printStackTrace();
+            flag = "false";
+        }
+    }
+    @Override
+    protected void onPostExecute(Integer result){
+        if(flag.equals("true")){
+            Toast.makeText(context,"予定入力成功",Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(context,"予定入力失敗",Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -157,7 +156,7 @@ public class InsertActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.actionok:
-                eventinsert = (EventInsert) new EventInsert().execute();
+                eventinsert = (EventInsert) new EventInsert(this).execute();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
