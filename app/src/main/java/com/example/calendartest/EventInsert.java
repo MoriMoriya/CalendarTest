@@ -24,11 +24,12 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private GoogleAccountCredential mcredential = InsertActivity.credential;
     com.google.api.services.calendar.Calendar service;
 
+
     @Override
     protected Integer doInBackground(Integer... integers) {
         mcredential.setSelectedAccountName(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         createEvent();
-        return null;
+        return 0;
     }
 
     private void createEvent() {
@@ -50,34 +51,27 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
                 .setLocation("")
                 .setDescription("");
 
-        //DateTime startDateTime = new DateTime("2018-09-15T18:00:00+09:00");
         DateTime startDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EStartTime + "+09:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
                 .setTimeZone("Asia/Tokyo");
         event.setStart(start);
 
-        //DateTime endDateTime = new DateTime("2018-09-15T20:00:00+09:00");
         DateTime endDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EEndTime + "+09:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("Asia/Tokyo");
         event.setEnd(end);
 
-        String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
+        String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=1"};
         event.setRecurrence(Arrays.asList(recurrence));
 
-/*        EventAttendee[] attendees = new EventAttendee[] {
-                new EventAttendee().setEmail("lpage@example.com"),
-                new EventAttendee().setEmail("sbrin@example.com"),
-        };
-        event.setAttendees(Arrays.asList(attendees));
-*/
 
-        EventReminder[] reminderOverrides = new EventReminder[] {
+        EventReminder[] reminderOverrides = new EventReminder[]{
                 new EventReminder().setMethod("popup").setMinutes(24 * 60),
                 new EventReminder().setMethod("popup").setMinutes(60),
         };
+
         Event.Reminders reminders = new Event.Reminders()
                 .setUseDefault(false)
                 .setOverrides(Arrays.asList(reminderOverrides));
@@ -89,8 +83,6 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //Log.e(TAG, );
     }
-    
 }
+

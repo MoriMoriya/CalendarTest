@@ -2,6 +2,7 @@ package com.example.calendartest;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -46,6 +48,7 @@ public class InsertActivity extends AppCompatActivity{
 
 
     private EventInsert eventinsert;
+    private EventConfirm eventconfirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,6 @@ public class InsertActivity extends AppCompatActivity{
 
         credential = GoogleAccountCredential.usingOAuth2(this,Collections.singleton(CalendarScopes.CALENDAR));
         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-
 
         String setcalendarDate = "";
         final String setcalendarStartTime = "";
@@ -99,7 +101,7 @@ public class InsertActivity extends AppCompatActivity{
                 timePicker.show(getSupportFragmentManager(), "timePicker");
             }
         });
-
+/*
         Button EventBtn = (Button) findViewById(R.id.Event);      //カレンダーにEventの追加
         EventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +110,19 @@ public class InsertActivity extends AppCompatActivity{
                 //credential.setSelectedAccountName("171y065@epson-isc.com");
 
                 eventinsert = (EventInsert) new EventInsert().execute();
+
+            }
+        });
+        */
+        Button ConfirmBtn = (Button) findViewById(R.id.Confirm);
+        ConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //eventconfirm = (EventConfirm) new EventConfirm().execute();
+                EventConfirm eventconfirm = (EventConfirm) new EventConfirm().execute();
+
+                Intent Confirm = new Intent(InsertActivity.this, EventConfirmActivity.class);
+                startActivity(Confirm);
 
             }
         });
@@ -148,6 +163,7 @@ public class InsertActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
 
 

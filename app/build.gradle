@@ -23,6 +23,16 @@ android {
 dependencies {
     //Firebase認証
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.google.api-client:google-api-client-android:1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.http-client:google-http-client-gson:1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.apis:google-api-services-calendar:v3-rev341-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
     compile 'com.android.support:support-v4:26.0.0-alpha1'
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'pub.devrel:easypermissions:0.3.0'
@@ -32,15 +42,5 @@ dependencies {
     compile 'com.google.firebase:firebase-core:11.6.0'
     compile 'com.google.firebase:firebase-auth:11.6.0'
     compile 'com.google.android.gms:play-services-auth:11.6.0'
-    compile('com.google.api-client:google-api-client-android:1.25.0') {
-        exclude group: 'org.apache.httpcomponents'
-    }
-    compile('com.google.http-client:google-http-client-gson:1.25.0'){
-        exclude group: 'org.apache.httpcomponents'
-    }
-    compile('com.google.apis:google-api-services-calendar:v3-rev341-1.25.0') {
-        exclude group: 'org.apache.httpcomponents'
-    }
-
 }
 apply plugin: 'com.google.gms.google-services'
