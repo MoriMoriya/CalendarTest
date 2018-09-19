@@ -30,7 +30,7 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         if(minute < 10){
             strMinute = "0" + minute;
         }
-        String str = "T" + strHourofday + ":" + strMinute + ":00";
+        String str = strHourofday + ":" + strMinute + ":00";
         InsertActivity callingActivity =(InsertActivity) getActivity();
         callingActivity.onTimeReturnValue(str);
         dismiss();

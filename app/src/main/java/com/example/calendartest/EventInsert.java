@@ -29,6 +29,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private String flag = "false";
 
     private Context context;
+    private int i=0;
 
     EventInsert(Context context){
         this.context = context;
@@ -50,23 +51,45 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
                 .setApplicationName("CalendarTest")
                 .build();
 
-        //String StartTime = (TextView) findViewById(R.id.StartTimeText);
+        String StartTime = String.valueOf(R.id.StartTimeText);
         String EndTime = String.valueOf(R.id.EndTimetext);
         String Day = String.valueOf(R.id.DateText);
 
+/*
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
 
+        try {
+            Date date = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EStartTime);
+            Date Edate = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EEndTime);
+
+            long dateTimeFrom = Edate.getTime();
+            long dateTimeTo = date.getTime();
+
+            long dayDiff =(dateTimeFrom - dateTimeTo) / (1000 * 60 * 60);
+            long dayDiff1 = (dateTimeFrom - dateTimeTo) / (1000 * 60) % 60;
+
+            Log.e(TAG, String.valueOf(dayDiff));
+            Log.e(TAG, String.valueOf(dayDiff1));
+
+
+            Log.e(TAG, String.valueOf(i));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+*/
         Event event = new Event()
                 .setSummary("TESTTEST")
                 .setLocation("")
                 .setDescription("");
 
-        DateTime startDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EStartTime + "+09:00");
+        DateTime startDateTime = new DateTime(InsertActivity.EDate + "T" + InsertActivity.EStartTime + "+09:00");
         EventDateTime start = new EventDateTime()
                 .setDateTime(startDateTime)
                 .setTimeZone("Asia/Tokyo");
         event.setStart(start);
 
-        DateTime endDateTime = new DateTime(InsertActivity.EDate + InsertActivity.EEndTime + "+09:00");
+        DateTime endDateTime = new DateTime(InsertActivity.EDate + "T" +InsertActivity.EEndTime + "+09:00");
         EventDateTime end = new EventDateTime()
                 .setDateTime(endDateTime)
                 .setTimeZone("Asia/Tokyo");
@@ -95,6 +118,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
             flag = "false";
         }
     }
+
     @Override
     protected void onPostExecute(Integer result){
         if(flag.equals("true")){

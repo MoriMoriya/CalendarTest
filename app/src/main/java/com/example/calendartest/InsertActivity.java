@@ -117,12 +117,11 @@ public class InsertActivity extends AppCompatActivity{
         ConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //eventconfirm = (EventConfirm) new EventConfirm().execute();
-                EventConfirm eventconfirm = (EventConfirm) new EventConfirm().execute();
 
                 Intent Confirm = new Intent(InsertActivity.this, EventConfirmActivity.class);
                 startActivity(Confirm);
-
             }
         });
      }
@@ -139,6 +138,7 @@ public class InsertActivity extends AppCompatActivity{
         TextView Timetext = (TextView) findViewById(R.id.StartTimeText);
         Timetext.setText(startTime);
         EStartTime = startTime;
+
     }
     public static String EEndTime;
     public void onEndTimeReturnValue(String endTime) {     //入力された終了時刻をtextに代入

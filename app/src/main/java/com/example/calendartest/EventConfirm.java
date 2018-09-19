@@ -1,5 +1,6 @@
 package com.example.calendartest;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -29,39 +30,45 @@ class EventConfirm extends  AsyncTask<Integer,Integer,Integer> {
 
     static ArrayList<String> list = new ArrayList<String>();
 
+
+    private Context context;
+    private int i=0;
+
+    EventConfirm(Context context){
+        this.context = context;
+    }
+
     @Override
     protected Integer doInBackground(Integer... integers) {
         mcredential.setSelectedAccountName(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         ConfirmEvent();
-        return null;
+        return 0;
     }
 
     private void ConfirmEvent() {
-
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
         Calendar service = new Calendar.Builder(transport, jsonFactory, mcredential)
-                .setApplicationName("applicationName").build();
+                .setApplicationName("CalendarTest").build();
 
         String pageToken = null;
-        do{
+
+        do {
             Events events = null;
             try {
                 events = service.events().list("primary").setPageToken(pageToken).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            list.clear();
-
             assert events != null;
             List<Event> items = events.getItems();
-            for(Event event : items){
-                Log.d(TAG,event.getSummary());
-                list.add(event.getSummary() + event.getEnd());
+
+            for (Event event : items) {
+                Log.d(TAG, event.getSummary());
+                list.add(event.getSummary());
             }
             pageToken = events.getNextPageToken();
-        }while(pageToken != null);
+        } while (pageToken != null);
     }
 }
