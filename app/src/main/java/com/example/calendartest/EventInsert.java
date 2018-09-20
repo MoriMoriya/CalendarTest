@@ -1,7 +1,9 @@
 package com.example.calendartest;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -16,7 +18,11 @@ import com.google.api.services.calendar.model.EventReminder;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Date;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by 171y065 on 2018/09/14.
@@ -55,7 +61,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         String EndTime = String.valueOf(R.id.EndTimetext);
         String Day = String.valueOf(R.id.DateText);
 
-/*
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
 
         try {
@@ -77,7 +83,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
             e.printStackTrace();
         }
 
-*/
+
         Event event = new Event()
                 .setSummary("TESTTEST")
                 .setLocation("")

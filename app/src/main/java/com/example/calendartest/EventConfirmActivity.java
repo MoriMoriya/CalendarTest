@@ -3,13 +3,13 @@ package com.example.calendartest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
 public class EventConfirmActivity extends AppCompatActivity {
 
-    Handler mHandler;
+    Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,9 +18,18 @@ public class EventConfirmActivity extends AppCompatActivity {
 
         EventConfirm eventconfirm = (EventConfirm) new EventConfirm(this).execute();
 
+
+/*
         ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,EventConfirm.list);
 
         listView.setAdapter(adapter);
-
+*/
     }
+    /*
+    public void getList(ArrayList<String> result){
+        ListView lv = (ListView)findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,result);
+        lv.setAdapter(adapter);
+    }
+*/
 }
