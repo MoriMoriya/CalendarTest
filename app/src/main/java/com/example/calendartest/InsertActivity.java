@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -146,16 +147,20 @@ public class InsertActivity extends AppCompatActivity{
         endTimetext.setText(endTime);
         EEndTime = endTime;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_sub,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    public static int Money;
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.actionok:
+                EditText moneyText = (EditText)findViewById(R.id.money);
+                Money = Integer.parseInt(moneyText.getText().toString());
                 eventinsert = (EventInsert) new EventInsert(this).execute();
                 return true;
             default:

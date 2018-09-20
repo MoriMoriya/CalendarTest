@@ -1,6 +1,7 @@
 package com.example.calendartest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,12 +13,13 @@ import android.widget.Button;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.util.Date;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG="MainActivity";
     private final int FORM_REQUESTCODE = 1000;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor edit;
+    private int dataInt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +72,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void onDayClick(Date dateClicked){
-        DatePickerDialogFragment datePicker = new DatePickerDialogFragment();
-        datePicker.show(getSupportFragmentManager(), "datePicker");
     }
 }

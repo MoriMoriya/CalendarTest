@@ -68,7 +68,7 @@ class EventConfirm extends  AsyncTask<String,Integer,ArrayList> {
 
             for (Event event : items) {
                 Log.d(TAG, event.getSummary());
-                list.add(event.getSummary());
+                list.add(event.getSummary() +"\n" + event.getDescription() + "\n" + event.getStart().getDateTime());
             }
             pageToken = events.getNextPageToken();
         } while (pageToken != null);
@@ -107,8 +107,8 @@ class EventConfirm extends  AsyncTask<String,Integer,ArrayList> {
     */
     @Override
     protected void onPostExecute(ArrayList result){
-        ListView list= (ListView) mEventConfirmActivity.findViewById(R.id.listView);
+        ListView lv= (ListView) mEventConfirmActivity.findViewById(R.id.listView);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mEventConfirmActivity,android.R.layout.simple_list_item_1,result);
-        list.setAdapter(adapter);
+        lv.setAdapter(adapter);
     }
 }

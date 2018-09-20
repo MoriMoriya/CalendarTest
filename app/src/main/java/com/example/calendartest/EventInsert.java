@@ -35,7 +35,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private String flag = "false";
 
     private Context context;
-    private int i=0;
+
 
     EventInsert(Context context){
         this.context = context;
@@ -61,7 +61,8 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         String EndTime = String.valueOf(R.id.EndTimetext);
         String Day = String.valueOf(R.id.DateText);
 
-
+        long Dmoney=0;
+        long money =0;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
 
         try {
@@ -77,8 +78,17 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
             Log.e(TAG, String.valueOf(dayDiff));
             Log.e(TAG, String.valueOf(dayDiff1));
 
+            Dmoney = InsertActivity.Money;
+            money = Dmoney * dayDiff;
 
-            Log.e(TAG, String.valueOf(i));
+            if(dayDiff1 == 15){
+                money += Dmoney * 0.25;
+            }else if(dayDiff1 == 30){
+                money += Dmoney * 0.5;
+            }else if(dayDiff1 == 45){
+                money += Dmoney * 0.75;
+            }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -87,7 +97,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         Event event = new Event()
                 .setSummary("TESTTEST")
                 .setLocation("")
-                .setDescription("");
+                .setDescription(String.valueOf(money) + "円");
 
         DateTime startDateTime = new DateTime(InsertActivity.EDate + "T" + InsertActivity.EStartTime + "+09:00");
         EventDateTime start = new EventDateTime()
