@@ -1,14 +1,12 @@
 package com.example.calendartest;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 
 public class EventConfirmActivity extends AppCompatActivity {
 
-    Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +15,7 @@ public class EventConfirmActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listView);
 
         EventConfirm eventconfirm = (EventConfirm) new EventConfirm(this).execute();
+
 
 
 /*

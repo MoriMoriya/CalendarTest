@@ -120,7 +120,6 @@ public class InsertActivity extends AppCompatActivity{
             public void onClick(View v) {
 
                 //eventconfirm = (EventConfirm) new EventConfirm().execute();
-
                 Intent Confirm = new Intent(InsertActivity.this, EventConfirmActivity.class);
                 startActivity(Confirm);
             }
