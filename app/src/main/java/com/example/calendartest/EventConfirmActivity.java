@@ -2,6 +2,10 @@ package com.example.calendartest;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class EventConfirmActivity extends AppCompatActivity {
@@ -11,10 +15,17 @@ public class EventConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_confirm);
-        //ListView listView = (ListView) findViewById(R.id.listView);
 
+        ListView lv = (ListView)findViewById(R.id.listView);
         EventConfirm eventconfirm = (EventConfirm) new EventConfirm(this).execute();
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String msg = i + "番目のアイテムがクリックされました。";
+                Toast.makeText(getApplicationContext(), msg , Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 /*
