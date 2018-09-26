@@ -1,9 +1,14 @@
 package com.example.calendartest;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -72,9 +77,42 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
     }
 
     @Override
-    protected void onPostExecute(ArrayList result){
+    protected void onPostExecute(final ArrayList result){
         ListView lv = mEventConfirmActivity.findViewById(listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mEventConfirmActivity, android.R.layout.simple_list_item_1, result);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(mEventConfirmActivity, android.R.layout.simple_list_item_1, result);
         lv.setAdapter(adapter);
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mEventConfirmActivity);
+                builder.setMessage("削除しますか？").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        result.remove(position);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(mEventConfirmActivity,"削除しました。",Toast.LENGTH_LONG).show();
+                        //eventdelete();
+                        EventDelete eventdelete = (EventDelete) new EventDelete().execute();
+
+                    }
+                }).setNegativeButton("キャンセル",null).setCancelable(true);
+                builder.show();
+                return false;
+            }
+        });
     }
+/*
+    public void eventdelete() {
+        HttpTransport transport = AndroidHttp.newCompatibleTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+
+        Calendar service = new Calendar.Builder(transport, jsonFactory, mcredential).setApplicationName("Calendartest").build();
+
+        try {
+            service.events().delete("primary","eventId").execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
 }
