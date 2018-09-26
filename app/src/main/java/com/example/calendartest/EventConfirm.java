@@ -26,7 +26,7 @@ import static com.example.calendartest.R.id.listView;
  * Created by 171y065 on 2018/09/18.
  */
 
-public class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
+class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
     GoogleAccountCredential mcredential = InsertActivity.credential;
     com.google.api.services.calendar.Calendar service;
 
@@ -45,44 +45,10 @@ public class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
-
-        Calendar service = new Calendar.Builder(transport,jsonFactory,mcredential).setApplicationName("CalendarTest").build();
-
-        String pageToken = null;
-        ArrayList<String> list = new ArrayList<>();
-
-        while (pageToken == null){
-            Events events = null;
-            try {
-                events = service.events().list("primary").setPageToken(pageToken).execute();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            List<Event> items = events.getItems();
-
-            for (Event event : items) {
-                Log.d(TAG, event.getSummary());
-                list.add(event.getSummary());
-            }
-            pageToken = events.getNextPageToken();
-        }
-        return list;
-    }
-
-    /*
-    private ArrayList<String> ConfirmEvent() {
-        mcredential.setSelectedAccountName(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
-        HttpTransport transport = AndroidHttp.newCompatibleTransport();
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-
-        Calendar service = new Calendar.Builder(transport, jsonFactory, mcredential)
-                .setApplicationName("CalendarTest").build();
+        Calendar service = new Calendar.Builder(transport, jsonFactory, mcredential).setApplicationName("Calendartest").build();
 
         String pageToken = null;
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList list = new ArrayList();
 
         do {
             Events events = null;
@@ -93,23 +59,21 @@ public class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
             }
             assert events != null;
             List<Event> items = events.getItems();
-
             for (Event event : items) {
-                Log.d(TAG, event.getSummary());
-                list.add(event.getSummary());
+                Log.d(TAG,event.getSummary()+event.getId(),null);
+                if(event.getSummary() != null) {
+                    list.add(event.getSummary());
+                }
             }
             pageToken = events.getNextPageToken();
-        } while (pageToken != null);
+        }while(pageToken != null );
         return list;
     }
-    */
 
     @Override
     protected void onPostExecute(ArrayList result){
-        ListView lv = (ListView)mEventConfirmActivity.findViewById(listView);
+        ListView lv = mEventConfirmActivity.findViewById(listView);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mEventConfirmActivity, android.R.layout.simple_list_item_1, result);
         lv.setAdapter(adapter);
-
     }
-
 }
