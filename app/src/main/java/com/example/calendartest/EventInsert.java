@@ -95,7 +95,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
 
 
         Event event = new Event()
-                .setSummary("TESTTEST")
+                .setSummary("アルバイト")
                 .setLocation("")
                 .setDescription(String.valueOf(money) + "円");
 

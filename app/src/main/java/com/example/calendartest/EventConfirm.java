@@ -62,7 +62,8 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
             for (Event event : items) {
                 Log.d(TAG,event.getSummary()+event.getId(),null);
                 if(event.getSummary() != null) {
-                    list.add(event.getSummary());
+                    list.add(event.getSummary() + "\n開始: " +event.getStart().getDateTime()
+                    +"\n終了: " + event.getEnd().getDateTime() + "　" + event.getDescription());
                 }
             }
             pageToken = events.getNextPageToken();
