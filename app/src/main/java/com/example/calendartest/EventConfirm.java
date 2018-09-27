@@ -91,9 +91,11 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         result.remove(position);
                         adapter.notifyDataSetChanged();
+
+                        //eventdelete(result,position);
+                        EventDelete eventdelete = (EventDelete) new EventDelete(position).execute();
                         Toast.makeText(mEventConfirmActivity,"削除しました。",Toast.LENGTH_LONG).show();
-                        //eventdelete();
-                        EventDelete eventdelete = (EventDelete) new EventDelete().execute();
+
 
                     }
                 }).setNegativeButton("キャンセル",null).setCancelable(true);
@@ -103,14 +105,14 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
         });
     }
 /*
-    public void eventdelete() {
+    public void eventdelete(ArrayList list, int position) {
         HttpTransport transport = AndroidHttp.newCompatibleTransport();
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
         Calendar service = new Calendar.Builder(transport, jsonFactory, mcredential).setApplicationName("Calendartest").build();
 
         try {
-            service.events().delete("primary","eventId").execute();
+            service.events().delete("primary",).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
