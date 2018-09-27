@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -56,7 +55,7 @@ public class showData extends AppCompatActivity {
             */
             allMoney += cursor.getInt(1);
 
-            data.add(cursor.getPosition() + cursor.getString(0) + ":  "+ cursor.getInt(1) + "円");
+            data.add(cursor.getString(0) + ":  "+ cursor.getInt(1) + "円");
             cursor.moveToNext();
         }
         data.add("累計:　　　   " + allMoney + "円");
@@ -64,7 +63,7 @@ public class showData extends AppCompatActivity {
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,data);
         ListView listView =(ListView)findViewById(R.id.showList);
         listView.setAdapter(adapter);
-        cursor.close();
+        //cursor.close();
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -73,10 +72,13 @@ public class showData extends AppCompatActivity {
                 builder.setMessage("削除しますか？").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        
+                        /*
                         data.remove(position);
-                        db.delete("money", "_id=" + 0 ,null);
+                        db.delete("money", "_id= ?", null);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(showData.this,"削除しました",Toast.LENGTH_LONG);
+                        */
                     }
                 }).setNegativeButton("キャンセル",null).setCancelable(true);
                 builder.show();
