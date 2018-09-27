@@ -59,7 +59,7 @@ public class EventDelete extends  AsyncTask<Integer,Integer,Integer> {
             for (Event event : items) {
                 Log.d(TAG,event.getSummary()+event.getId(),null);
                 if(event.getSummary() != null) {
-                    Dlist.add(event.getId());
+                        Dlist.add(event.getId());
                 }
             }
             pageToken = events.getNextPageToken();

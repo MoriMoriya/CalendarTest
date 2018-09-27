@@ -98,6 +98,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         Event event = new Event()
                 .setSummary("アルバイト")
                 .setLocation("")
+                .setColorId("3")
                 .setDescription(String.valueOf(money) + "円");
 
         DateTime startDateTime = new DateTime(InsertActivity.EDate + "T" + InsertActivity.EStartTime + "+09:00");

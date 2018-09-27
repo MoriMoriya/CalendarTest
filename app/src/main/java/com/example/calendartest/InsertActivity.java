@@ -50,12 +50,13 @@ public class InsertActivity extends AppCompatActivity{
     private EventInsert eventinsert;
     private EventConfirm eventconfirm;
 
+    private Database helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
         ListView listView;
-
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission_group.CALENDAR)) {
@@ -127,6 +128,14 @@ public class InsertActivity extends AppCompatActivity{
                 startActivity(Confirm);
             }
         });
+        Button dbBtn = (Button) findViewById(R.id.dbButton);
+        dbBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent db = new Intent(InsertActivity.this,showData.class);
+                startActivity(db);
+            }
+        });
      }
 
     //選択された日付をtextに代入
@@ -175,7 +184,6 @@ public class InsertActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
 
 

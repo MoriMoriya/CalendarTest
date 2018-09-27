@@ -35,6 +35,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".EventConfirmActivity">
         </activity>
+        <activity android:name=".showData">
+        </activity>
     </application>
 
 </manifest>
