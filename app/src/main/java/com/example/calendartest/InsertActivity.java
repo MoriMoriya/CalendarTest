@@ -50,7 +50,6 @@ public class InsertActivity extends AppCompatActivity{
     private EventInsert eventinsert;
     private EventConfirm eventconfirm;
 
-    private Database helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +127,8 @@ public class InsertActivity extends AppCompatActivity{
                 startActivity(Confirm);
             }
         });
+
+        //予定確認が押された際のページ遷移
         Button dbBtn = (Button) findViewById(R.id.dbButton);
         dbBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -34,7 +34,13 @@ public class Database extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db){
+        //テーブル作成
         db.execSQL(SQL_CREATE_ENTRIES);
+
+        saveData(db,"2018-09-27",1500);
+        saveData(db,"2018-09-28",1500);
+        saveData(db,"2018-09-29",1500);
+        saveData(db,"2018-09-30",1500);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -49,10 +55,10 @@ public class Database extends SQLiteOpenHelper{
 
     public void saveData(SQLiteDatabase db, String item, int price){
         ContentValues values = new ContentValues();
-        values.put("items", item);
-        values.put("price", price);
+        values.put("date", item);
+        values.put("money", price);
 
-        db.insert("testdb", null, values);
+        db.insert("Money", null, values);
     }
 
     /*
