@@ -1,6 +1,5 @@
 package com.example.calendartest;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -37,10 +36,6 @@ public class Database extends SQLiteOpenHelper{
         //テーブル作成
         db.execSQL(SQL_CREATE_ENTRIES);
 
-        saveData(db,"2018-09-27",1500);
-        saveData(db,"2018-09-28",1500);
-        saveData(db,"2018-09-29",1500);
-        saveData(db,"2018-09-30",1500);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -53,13 +48,6 @@ public class Database extends SQLiteOpenHelper{
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void saveData(SQLiteDatabase db, String item, int price){
-        ContentValues values = new ContentValues();
-        values.put("date", item);
-        values.put("money", price);
-
-        db.insert("Money", null, values);
-    }
 
     /*
     private static final int DATABASE_VERSION = 4;

@@ -1,13 +1,11 @@
 package com.example.calendartest;
 
-import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +29,21 @@ import java.util.List;
 public class InsertActivity extends AppCompatActivity{
 
 
+    // データーベース名
+    private static final String DATABASE_NAME = "MONEY.db";
+    private static final String TABLE_NAME = "Money";
+    private static final String _ID = "_id";
+    private static final String COLUMN_NAME_TITLE = "date";
+    private static final String COLUMN_NAME_SUBTITLE = "money";
+
+    private static final int DATABASE_VERSION = 4;
+
+    private static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + TABLE_NAME + " (" +
+                    _ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_NAME_TITLE + " TEXT," +
+                    COLUMN_NAME_SUBTITLE + " INTEGER)";
+
     private static String TAG = "InsertActivity";
 
 
@@ -49,7 +62,7 @@ public class InsertActivity extends AppCompatActivity{
 
     private EventInsert eventinsert;
     private EventConfirm eventconfirm;
-
+    private Database helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +70,8 @@ public class InsertActivity extends AppCompatActivity{
         setContentView(R.layout.activity_insert);
         ListView listView;
 
+        helper = new Database(getApplicationContext());
+        /*
         if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission_group.CALENDAR)) {
 
@@ -64,6 +79,8 @@ public class InsertActivity extends AppCompatActivity{
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission_group.CALENDAR}, MY_PERMISSION_REQUEST_WRITE_CALENDAR);
             }
         }
+        */
+
 
         credential = GoogleAccountCredential.usingOAuth2(this,Collections.singleton(CalendarScopes.CALENDAR));
         SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
@@ -164,6 +181,7 @@ public class InsertActivity extends AppCompatActivity{
         EEndTime = endTime;
     }
 
+
     //オプションメニュー(紙飛行機の追加)
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -180,6 +198,12 @@ public class InsertActivity extends AppCompatActivity{
                 EditText moneyText = (EditText)findViewById(R.id.money);
                 Money = Integer.parseInt(moneyText.getText().toString());
                 eventinsert = (EventInsert) new EventInsert(this).execute();
+
+                final SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues val = new ContentValues();
+                val.put("date",EDate);
+                val.put("money",Money);
+                db.insert("Money",null,val);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

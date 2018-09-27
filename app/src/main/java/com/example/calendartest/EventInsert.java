@@ -35,7 +35,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
     private String flag = "false";
 
     private Context context;
-
+    private Database helper;
 
     EventInsert(Context context){
         this.context = context;
