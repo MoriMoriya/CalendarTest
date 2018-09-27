@@ -24,6 +24,7 @@ public class EndTimePickerDialogFragment extends DialogFragment implements TimeP
         String strHourofday = String.valueOf(hourOfDay);
         String strMinute = String.valueOf(minute);
 
+        //もし時、分が10未満だった時の処理
         if(hourOfDay <10){
             strHourofday = "0" + hourOfDay;
         }

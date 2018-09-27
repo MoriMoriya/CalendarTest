@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Fabボタンが押された際のページ遷移
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(insertintent);
             }
         });
+        //Firebaseがログインできていない際にログインするように促すコード(機能してない)
         if(FirebaseInstanceId.getInstance() == null){
             Intent Signintent = new Intent(MainActivity.this,GoogleSignInActivity.class);
             startActivity(Signintent);
         }
+
+        //サインインボタンが押された際のページ遷移
         Button signBtn = (Button) findViewById(R.id.SignBtn);
         signBtn.setOnClickListener(new View.OnClickListener() {
             @Override

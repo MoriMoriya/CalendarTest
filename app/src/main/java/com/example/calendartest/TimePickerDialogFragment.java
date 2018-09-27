@@ -24,6 +24,8 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         //時刻が選択された時の処理
         String strHourofday = String.valueOf(hourOfDay);
         String strMinute = String.valueOf(minute);
+
+        //もし時、分が10未満だった時の処理
         if(hourOfDay <10){
             strHourofday = "0" + hourOfDay;
         }

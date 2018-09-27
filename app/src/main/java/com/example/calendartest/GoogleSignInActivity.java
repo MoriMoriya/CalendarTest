@@ -2,11 +2,8 @@ package com.example.calendartest;
 
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +58,8 @@ public class GoogleSignInActivity extends MainActivity implements
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
+
+        //Googleアカウントのリクエスト(GoogleCalendarへのアクセス権限)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -70,7 +69,7 @@ public class GoogleSignInActivity extends MainActivity implements
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
         mAuth = FirebaseAuth.getInstance();
 
-
+        /* Permissionのチェック(使ってない)
         if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.GET_ACCOUNTS)) {
 
@@ -78,6 +77,7 @@ public class GoogleSignInActivity extends MainActivity implements
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.GET_ACCOUNTS},MY_GET_ACCOUNTS);
             }
         }
+        */
     }
 
     @Override

@@ -74,7 +74,8 @@ public class InsertActivity extends AppCompatActivity{
 
         final TextView text = (TextView) findViewById(R.id.DateText);
 
-        Button DateBtn = (Button) findViewById(R.id.DateButton);        //日付の選択画面
+        //日付の選択ダイアログの表示
+        Button DateBtn = (Button) findViewById(R.id.DateButton);
         DateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,8 +84,7 @@ public class InsertActivity extends AppCompatActivity{
             }
         });
 
-
-        Button startBtn = (Button) findViewById(R.id.StartBtn);     //開始時刻の選択画面
+        Button startBtn = (Button) findViewById(R.id.StartBtn);
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,8 @@ public class InsertActivity extends AppCompatActivity{
             }
         });
 
-        Button endBtn = (Button) findViewById(R.id.Endbutton);      //終了時刻の選択画面
+        //終了時刻の選択ダイアログの表示
+        Button endBtn = (Button) findViewById(R.id.Endbutton);
         endBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +115,8 @@ public class InsertActivity extends AppCompatActivity{
             }
         });
         */
+
+        //予定確認ボタンが押された際のページ遷移
         Button ConfirmBtn = (Button) findViewById(R.id.Confirm);
         ConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,33 +129,39 @@ public class InsertActivity extends AppCompatActivity{
         });
      }
 
+    //選択された日付をtextに代入
     public static String EDate;
-    public void onDateReturnValue(String Date) {            //入力された日付をtextに代入
+    public void onDateReturnValue(String Date) {
         TextView Datetext = (TextView) findViewById(R.id.DateText);
         Datetext.setText(Date);
         EDate = Date;
     }
 
+    //選択された開始時刻をtextに代入
     public static String EStartTime;
-    public void onTimeReturnValue(String startTime) {        //入力された開始時刻をtextに代入
+    public void onTimeReturnValue(String startTime) {
         TextView Timetext = (TextView) findViewById(R.id.StartTimeText);
         Timetext.setText(startTime);
         EStartTime = startTime;
 
     }
+
+    //選択された終了時刻をtextに代入
     public static String EEndTime;
-    public void onEndTimeReturnValue(String endTime) {     //入力された終了時刻をtextに代入
+    public void onEndTimeReturnValue(String endTime) {
         TextView endTimetext = (TextView) findViewById(R.id.EndTimetext);
         endTimetext.setText(endTime);
         EEndTime = endTime;
     }
 
+    //オプションメニュー(紙飛行機の追加)
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_sub,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //オプションメニューが押された際の処理
     public static int Money;
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

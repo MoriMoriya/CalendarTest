@@ -65,6 +65,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         long money =0;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
 
+        //入力された時間の差を求めて給料計算をする
         try {
             Date date = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EStartTime);
             Date Edate = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EEndTime);
@@ -93,7 +94,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
             e.printStackTrace();
         }
 
-
+        //イベントの追加
         Event event = new Event()
                 .setSummary("アルバイト")
                 .setLocation("")
@@ -135,6 +136,7 @@ public class EventInsert extends AsyncTask<Integer,Integer,Integer> {
         }
     }
 
+    //追加できた際の処理、追加できなかった際の処理
     @Override
     protected void onPostExecute(Integer result){
         if(flag.equals("true")){

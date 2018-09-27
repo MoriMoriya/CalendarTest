@@ -46,6 +46,7 @@ public class EventDelete extends  AsyncTask<Integer,Integer,Integer> {
         String pageToken = null;
         ArrayList Dlist = new ArrayList();
 
+        //イベントの取得
         do {
             Events events = null;
             try {
@@ -64,6 +65,7 @@ public class EventDelete extends  AsyncTask<Integer,Integer,Integer> {
             pageToken = events.getNextPageToken();
         }while(pageToken != null );
 
+        //取得したイベントを削除する
         try {
             service.events().delete("primary", (String) Dlist.get(Position)).execute();
         } catch (IOException e) {

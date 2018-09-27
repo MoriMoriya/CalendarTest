@@ -32,6 +32,8 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
         String strmonth = String.valueOf(month);
         String strday = String.valueOf(day);
+
+        //もし月、日が10未満だった場合の処理
         if(month < 10){
             strmonth = "0" + month;
         }

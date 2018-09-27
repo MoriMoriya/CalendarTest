@@ -54,7 +54,7 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
 
         String pageToken = null;
         ArrayList list = new ArrayList();
-
+        //イベントの取得
         do {
             Events events = null;
             try {
@@ -82,6 +82,7 @@ class EventConfirm extends AsyncTask<String,Integer,ArrayList> {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(mEventConfirmActivity, android.R.layout.simple_list_item_1, result);
         lv.setAdapter(adapter);
 
+        //イベントロングタップ時の削除コード
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
