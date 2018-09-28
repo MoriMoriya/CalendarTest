@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class showData extends AppCompatActivity {
 
@@ -64,7 +66,7 @@ public class showData extends AppCompatActivity {
         }
         data.add("累計:　　　   " + allMoney + "円");
 
-/*
+
         Calendar cl = Calendar.getInstance();
 
         int clMonth = cl.get(Calendar.MONTH)+1;
@@ -86,13 +88,14 @@ public class showData extends AppCompatActivity {
             clday = "0" + clday;
         }
 
-        String cal = cl.get(Calendar.YEAR)  + "-" + clmonth;
-        String endcal = cl.get(Calendar.YEAR) + "-" + dateclmonth;
+        String cal = cl.get(Calendar.YEAR)  + "-" + clmonth + "-" + clday;
+        String endcal = cl.get(Calendar.YEAR) + "-" + dateclmonth + "-" + clday;
         Log.d("",cal + "\n" + endcal ,null);
-        Cursor cursor1 = db.rawQuery("SELECT * FROM Money WHERE STRFTIME('%Y-%m'," + endcal + ") >= " + "STRFTIME('%Y-%m',"+ cal + ")",null);
+        Cursor cursor1 = db.rawQuery("SELECT * FROM Money WHERE STRFTIME('%Y-%m'," + cal + ") < STRFTIME('%Y-%m'," + endcal + ")" ,null);
         cursor1.moveToFirst();
         int monthMoney =0;
         for(int i =0; i< cursor1.getCount(); i++){
+
             monthMoney += cursor1.getInt(2);
             Log.d("DB_RawQuery", String.valueOf(cursor1.getInt(2)),null);
             cursor1.moveToNext();
@@ -100,7 +103,7 @@ public class showData extends AppCompatActivity {
         data.add("月:　　　　   " + monthMoney + "円");
 
         //where strftime('YYYY-mm'," + endcal + ") > " + "strftime('YYYY-mm',"+ cal +")
-*/
+
 
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,data);
         ListView listView =(ListView)findViewById(R.id.showList);
