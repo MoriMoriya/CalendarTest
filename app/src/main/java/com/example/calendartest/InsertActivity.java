@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +24,9 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
 
+import java.text.ParseException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -199,10 +203,44 @@ public class InsertActivity extends AppCompatActivity{
                 Money = Integer.parseInt(moneyText.getText().toString());
                 eventinsert = (EventInsert) new EventInsert(this).execute();
 
+                long Dmoney=0;
+                long money =0;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
+
+                //入力された時間の差を求めて給料計算をする
+                try {
+                    Date date = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EStartTime);
+                    Date Edate = sdf.parse(InsertActivity.EDate + " " + InsertActivity.EEndTime);
+
+                    long dateTimeFrom = Edate.getTime();
+                    long dateTimeTo = date.getTime();
+
+                    long dayDiff =(dateTimeFrom - dateTimeTo) / (1000 * 60 * 60);
+                    long dayDiff1 = (dateTimeFrom - dateTimeTo) / (1000 * 60) % 60;
+
+                    Log.e(TAG, String.valueOf(dayDiff));
+                    Log.e(TAG, String.valueOf(dayDiff1));
+
+                    Dmoney = InsertActivity.Money;
+                    money = Dmoney * dayDiff;
+
+                    if(dayDiff1 == 15){
+                        money += Dmoney * 0.25;
+                    }else if(dayDiff1 == 30){
+                        money += Dmoney * 0.5;
+                    }else if(dayDiff1 == 45){
+                        money += Dmoney * 0.75;
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
                 final SQLiteDatabase db = helper.getWritableDatabase();
                 ContentValues val = new ContentValues();
                 val.put("date",EDate);
-                val.put("money",Money);
+                val.put("money",money);
                 db.insert("Money",null,val);
                 return true;
             default:
