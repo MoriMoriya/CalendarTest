@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,7 +37,7 @@ public class showData extends AppCompatActivity {
         final SQLiteDatabase db = helper.getReadableDatabase();
         final Cursor cursor = db.query(
                 "Money",
-                new String[]{"date","money"},
+                new String[]{"_id","date","money"},
                 null,
                 null,
                 null,
@@ -45,6 +47,7 @@ public class showData extends AppCompatActivity {
         cursor.moveToFirst();
 
         StringBuilder sbuilder = new StringBuilder();
+        int id =0;
 
         for(int i = 0; i < cursor.getCount();i++){
             /*
@@ -53,9 +56,10 @@ public class showData extends AppCompatActivity {
             sbuilder.append(cursor.getInt(1));
             sbuilder.append("円\n\n");
             */
-            allMoney += cursor.getInt(1);
-
-            data.add(cursor.getString(0) + ":  "+ cursor.getInt(1) + "円");
+            id = cursor.getInt(0);
+            allMoney += cursor.getInt(2);
+            Log.e("", String.valueOf(id),null);
+            data.add(cursor.getString(1) + ":  "+ cursor.getInt(2) + "円");
             cursor.moveToNext();
         }
         data.add("累計:　　　   " + allMoney + "円");
@@ -63,8 +67,8 @@ public class showData extends AppCompatActivity {
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,data);
         ListView listView =(ListView)findViewById(R.id.showList);
         listView.setAdapter(adapter);
-        //cursor.close();
 
+        final int finalId = id;
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
@@ -72,18 +76,17 @@ public class showData extends AppCompatActivity {
                 builder.setMessage("削除しますか？").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        
-                        /*
                         data.remove(position);
-                        db.delete("money", "_id= ?", null);
+                        db.delete("money", "_id=" + finalId, null);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(showData.this,"削除しました",Toast.LENGTH_LONG);
-                        */
+
                     }
                 }).setNegativeButton("キャンセル",null).setCancelable(true);
                 builder.show();
                 return false;
             }
         });
+        cursor.close();
     }
 }
